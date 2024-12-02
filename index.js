@@ -15,6 +15,7 @@ const studyPrevious = document.getElementById('study-previous');
 const exercisePrevious = document.getElementById('exercise-previous');
 const socialPrevious = document.getElementById('social-previous');
 const selfCarePrevious = document.getElementById('self-care-previous');
+const prefixSpan = document.querySelectorAll('.prefix');
 
 let json_data = [];
 
@@ -26,9 +27,15 @@ fetch('./data.json').then((response) => {
     updateData('daily');
 });
 
-function updateData(selected) {
+function getPrefix(selected) {
     const prefix = selected === 'daily' ? 'Yesterday' : (selected === 'weekly') ? 'Last Week' : 'Last Month';
 
+    for (let i = 0; i < prefixSpan.length; i++) {
+        prefixSpan[i].textContent = prefix;
+    }
+}
+
+function updateOptionsCSS(selected) {
     if (selected === 'daily') {
         daily.classList.add('selected_option');
         weekly.classList.remove('selected_option');
@@ -42,30 +49,37 @@ function updateData(selected) {
         weekly.classList.remove('selected_option');
         monthly.classList.add('selected_option');
     }
+}
+
+function updateData(selected) {
+    getPrefix(selected);
+
+    updateOptionsCSS(selected);
+
     for (let i = 0; i < json_data.length; i++) {
         if (json_data[i].title === "Work") {
-            workCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
-            workPrevious.textContent = `${prefix} - ${json_data[i].timeframes[selected].previous}hrs`;
+            workCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+            workPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
         if (json_data[i].title === "Play") {
-            playCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
-            playPrevious.textContent = `${prefix} - ${json_data[i].timeframes[selected].previous}hrs`;
+            playCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+            playPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
         if (json_data[i].title === "Study") {
-            studyCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
-            studyPrevious.textContent = `${prefix} - ${json_data[i].timeframes[selected].previous}hrs`;
+            studyCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+            studyPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
         if (json_data[i].title === "Exercise") {
-            exerciseCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
-            exercisePrevious.textContent = `${prefix} - ${json_data[i].timeframes[selected].previous}hrs`;
+            exerciseCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+            exercisePrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
         if (json_data[i].title === "Social") {
-            socialCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
-            socialPrevious.textContent = `${prefix} - ${json_data[i].timeframes[selected].previous}hrs`;
+            socialCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+            socialPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
         if (json_data[i].title === "Self Care") {
-            selfCareCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
-            selfCarePrevious.textContent = `${prefix} - ${json_data[i].timeframes[selected].previous}hrs`;
+            selfCareCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+            selfCarePrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
     }
 }
