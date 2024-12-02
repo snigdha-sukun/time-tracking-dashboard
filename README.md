@@ -56,12 +56,15 @@ fetch('./data.json').then((response) => {
     updateData('daily');
 });
 ```
+
 I learned how to manipulate html content from js:
+
 ```js
 selfCareCurrent.textContent = `${json_data[i].timeframes[selected].current}hrs`;
 ```
 
 I learned how to use `:not` and `:has` in CSS:
+
 ```css
 .content:hover:not(:has(.ellipsis:hover)) {
     cursor: pointer;
