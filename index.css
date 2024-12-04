@@ -46,6 +46,10 @@ main {
     align-items: center;
 }
 
+button {
+    all: unset;
+}
+
 .container {
     border-radius: 0.5em;
     width: max-content;
@@ -86,7 +90,6 @@ main {
 }
 
 .user_img {
-    width: 3.5em;
     border: 0.2em solid white;
     border-radius: 50%;
 }
@@ -110,6 +113,8 @@ main {
 
 .options {
     padding: 2em;
+    display: flex;
+    flex-direction: column;
 }
 
 .option {
@@ -155,6 +160,10 @@ main {
 }
 
 @media (max-width: 768px) {
+    body {
+        height: fit-content;
+    }
+
     main {
         display: flex;
         flex-direction: column;
@@ -173,7 +182,7 @@ main {
     }
 
     .options {
-        display: flex;
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
         padding: 1em;

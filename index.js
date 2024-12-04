@@ -1,6 +1,7 @@
 const daily = document.getElementById('daily');
 const weekly = document.getElementById('weekly');
 const monthly = document.getElementById('monthly');
+const optionsContainer = document.getElementById('options-container');
 
 const workCurrent = document.getElementById('work-current');
 const playCurrent = document.getElementById('play-current');
@@ -27,7 +28,7 @@ fetch('./data.json').then((response) => {
     updateData('daily');
 });
 
-function getPrefix(selected) {
+function updatePrefix(selected) {
     const prefix = selected === 'daily' ? 'Yesterday' : (selected === 'weekly') ? 'Last Week' : 'Last Month';
 
     for (let i = 0; i < prefixSpan.length; i++) {
@@ -36,62 +37,56 @@ function getPrefix(selected) {
 }
 
 function updateOptionsCSS(selected) {
+    const lastSelectedOption = document.querySelector(".selected_option")
+    const selectedClass = "selected_option"
+    lastSelectedOption.classList.remove(selectedClass);
+
     if (selected === 'daily') {
-        daily.classList.add('selected_option');
-        weekly.classList.remove('selected_option');
-        monthly.classList.remove('selected_option');
+        daily.classList.add(selectedClass);
     } else if (selected === 'weekly') {
-        daily.classList.remove('selected_option');
-        weekly.classList.add('selected_option');
-        monthly.classList.remove('selected_option');
+        weekly.classList.add(selectedClass);
     } else {
-        daily.classList.remove('selected_option');
-        weekly.classList.remove('selected_option');
-        monthly.classList.add('selected_option');
+        monthly.classList.add(selectedClass);
     }
 }
 
 function updateData(selected) {
-    getPrefix(selected);
+    updatePrefix(selected);
 
     updateOptionsCSS(selected);
 
     for (let i = 0; i < json_data.length; i++) {
-        if (json_data[i].title === "Work") {
-            workCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
-            workPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
+        const item = json_data[i]
+        const title = item.title
+        const timeframe = item.timeframes[selected]
+        if (title === "Work") {
+            workCurrent.textContent = `${timeframe.current}`;
+            workPrevious.textContent = `${timeframe.previous}`;
         }
-        if (json_data[i].title === "Play") {
-            playCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
-            playPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
+        if (title === "Play") {
+            playCurrent.textContent = `${timeframe.current}`;
+            playPrevious.textContent = `${timeframe.previous}`;
         }
-        if (json_data[i].title === "Study") {
-            studyCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
-            studyPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
+        if (title === "Study") {
+            studyCurrent.textContent = `${timeframe.current}`;
+            studyPrevious.textContent = `${timeframe.previous}`;
         }
-        if (json_data[i].title === "Exercise") {
-            exerciseCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
+        if (title === "Exercise") {
+            exerciseCurrent.textContent = `${timeframe.current}`;
             exercisePrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
         }
-        if (json_data[i].title === "Social") {
-            socialCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
-            socialPrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
+        if (title === "Social") {
+            socialCurrent.textContent = `${timeframe.current}`;
+            socialPrevious.textContent = `${timeframe.previous}`;
         }
-        if (json_data[i].title === "Self Care") {
-            selfCareCurrent.textContent = `${json_data[i].timeframes[selected].current}`;
-            selfCarePrevious.textContent = `${json_data[i].timeframes[selected].previous}`;
+        if (title === "Self Care") {
+            selfCareCurrent.textContent = `${timeframe.current}`;
+            selfCarePrevious.textContent = `${timeframe.previous}`;
         }
     }
 }
 
-daily.addEventListener('click', () => {
-    updateData('daily');
-});
-
-weekly.addEventListener('click', () => {
-    updateData('weekly');
-});
-
-monthly.addEventListener('click', () => {
-    updateData('monthly');
+optionsContainer.addEventListener("click", (event) => {
+    if (!event.target.getAttribute("data-time")) return;
+    updateData(event.target.getAttribute("data-time"));
 });
